@@ -24,14 +24,13 @@ function App() {
   }
 
   function updateProductQuantity(name, quantity) {
+    if (quantity < 1 || isNaN(quantity)) {
+      return;
+    }
     setAddedProducts(curr => curr.map(product => product.name === name ? { ...product, quantity } : product))
   }
 
   function removeFromCart(product) {
-    if (product.quantity > 1) {
-      updateProductQuantity(product.name, product.quantity - 1)
-      return;
-    }
     setAddedProducts(curr => curr.filter(p => p.name !== product.name))
   }
 
@@ -61,7 +60,7 @@ function App() {
                 <li className="mb-15" key={i}>
                   <span className="me-15">{product.name}</span>
                   <span className="me-15">€ {(product.price).toFixed(2)}</span>
-                  <span className="me-15">x{product.quantity}</span>
+                  <span className="me-15"><input type="number" value={product.quantity} onChange={e => updateProductQuantity(product.name, parseInt(e.target.value))} /></span>
                   <button onClick={() => removeFromCart(product)}>Rimuovi dal carrello</button>
                 </li>
               )
