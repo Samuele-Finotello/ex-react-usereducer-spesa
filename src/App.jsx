@@ -11,18 +11,42 @@ function App() {
     { name: 'Pasta', price: 0.7 },
   ];
 
+  function addToCart(product) {
+    if (addedProducts.some(p => p.name === product.name)) return;
+    const productToAdd = {
+      ...product,
+      quantity: 1
+    }
+    setAddedProducts(curr => [...curr, productToAdd])
+  }
+
   return (
     <>
       <div>
         <ul>
-          {products.map(product => {
+          {products.map((product, i) => {
             return (
-              <li>
+              <li className="mb-15" key={i}>
                 <span className="me-15">{product.name}</span>
-                <span>€ {product.price}</span>
+                <span className="me-15">€ {product.price}</span>
+                <button onClick={() => addToCart(product)}>Aggiungi al carrello</button>
               </li>
             )
           })}
+        </ul>
+        <h2>Carrello:</h2>
+        <ul>
+          {addedProducts.length === 0 ? 'Carrello vuoto' :
+            addedProducts.map((product, i) => {
+              return (
+                <li className="mb-15" key={i}>
+                  <span className="me-15">{product.name}</span>
+                  <span className="me-15">€ {product.price}</span>
+                  <span>Quantity: {product.quantity}</span>
+                </li>
+              )
+            })
+          }
         </ul>
       </div>
     </>
