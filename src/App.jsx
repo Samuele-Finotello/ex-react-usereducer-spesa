@@ -28,7 +28,7 @@ function App() {
   }
 
   function removeFromCart(product) {
-
+    setAddedProducts(curr => curr.filter(p => p.name !== product.name))
   }
 
   return (
