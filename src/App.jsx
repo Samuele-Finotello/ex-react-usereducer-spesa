@@ -28,8 +28,16 @@ function App() {
   }
 
   function removeFromCart(product) {
+    if (product.quantity > 1) {
+      updateProductQuantity(product.name, product.quantity - 1)
+      return;
+    }
     setAddedProducts(curr => curr.filter(p => p.name !== product.name))
   }
+
+  const total = addedProducts.reduce((acc, product) => {
+    return acc + product.price * product.quantity;
+  }, 0)
 
   return (
     <>
@@ -39,7 +47,7 @@ function App() {
             return (
               <li className="mb-15" key={i}>
                 <span className="me-15">{product.name}</span>
-                <span className="me-15">€ {product.price}</span>
+                <span className="me-15">€ {(product.price).toFixed(2)}</span>
                 <button onClick={() => addToCart(product)}>Aggiungi al carrello</button>
               </li>
             )
@@ -52,7 +60,7 @@ function App() {
               return (
                 <li className="mb-15" key={i}>
                   <span className="me-15">{product.name}</span>
-                  <span className="me-15">€ {product.price}</span>
+                  <span className="me-15">€ {(product.price).toFixed(2)}</span>
                   <span className="me-15">x{product.quantity}</span>
                   <button onClick={() => removeFromCart(product)}>Rimuovi dal carrello</button>
                 </li>
@@ -60,6 +68,7 @@ function App() {
             })
           }
         </ul>
+        <h2>Totale carrello: € {total.toFixed(2)}</h2>
       </div>
     </>
   )
