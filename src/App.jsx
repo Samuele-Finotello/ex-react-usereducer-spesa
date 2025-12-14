@@ -1,5 +1,8 @@
+import { useState } from "react";
 
 function App() {
+
+  const [addedProducts, setAddedProducts] = useState([])
 
   const products = [
     { name: 'Mela', price: 0.5 },
