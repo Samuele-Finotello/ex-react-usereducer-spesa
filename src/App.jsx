@@ -12,12 +12,23 @@ function App() {
   ];
 
   function addToCart(product) {
-    if (addedProducts.some(p => p.name === product.name)) return;
-    const productToAdd = {
+    const addedProduct = addedProducts.find(p => p.name === product.name);
+    if (addedProduct) {
+      updateProductQuantity(addedProduct.name, addedProduct.quantity + 1)
+      return;
+    }
+    setAddedProducts(curr => [...curr, {
       ...product,
       quantity: 1
-    }
-    setAddedProducts(curr => [...curr, productToAdd])
+    }])
+  }
+
+  function updateProductQuantity(name, quantity) {
+    setAddedProducts(curr => curr.map(product => product.name === name ? { ...product, quantity } : product))
+  }
+
+  function removeFromCart(product) {
+
   }
 
   return (
@@ -42,7 +53,8 @@ function App() {
                 <li className="mb-15" key={i}>
                   <span className="me-15">{product.name}</span>
                   <span className="me-15">€ {product.price}</span>
-                  <span>Quantity: {product.quantity}</span>
+                  <span className="me-15">x{product.quantity}</span>
+                  <button onClick={() => removeFromCart(product)}>Rimuovi dal carrello</button>
                 </li>
               )
             })
